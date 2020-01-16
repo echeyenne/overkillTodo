@@ -1,12 +1,13 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './components/header/header.component';
+import { MaterialModule } from './material.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
+      imports: [MaterialModule],
+      declarations: [AppComponent, HeaderComponent],
     }).compileComponents();
   }));
 
@@ -22,10 +23,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('overkill-todo');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('overkill-todo app is running!');
-  });
 });
