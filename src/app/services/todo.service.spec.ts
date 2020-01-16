@@ -1,9 +1,8 @@
-import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
-import { TodoService } from './todo.service';
-import { TodoModel } from '../models/todo.model';
+import { TestBed } from '@angular/core/testing';
 import { environment } from 'src/environments/environment';
+import { TodoModel } from '../models/todo.model';
+import { TodoService } from './todo.service';
 
 describe('TodoService', () => {
   let todoService: TodoService;
@@ -25,9 +24,9 @@ describe('TodoService', () => {
 
   it('should return an Observable of 3 todos', () => {
     const mockedTodos: Array<TodoModel> = [
-      { id: 1, title: 'Todo 1', isClosed: false },
-      { id: 2, title: 'Todo 2', isClosed: false },
-      { id: 3, title: 'Todo 3', isClosed: true }
+      { id: 1, title: 'Todo 1', isClosed: false, lastUpdateTimestamp: 1579179834 },
+      { id: 2, title: 'Todo 2', isClosed: false, lastUpdateTimestamp: 1579179834 },
+      { id: 3, title: 'Todo 3', isClosed: true, lastUpdateTimestamp: 1579179834 }
     ];
 
     let retrievedTodos: Array<TodoModel> = [];
