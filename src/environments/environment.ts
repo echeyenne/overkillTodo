@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // No baseUrl for the moment, const defined to be ready to set it easily later
+  baseUrl: ''
 };
 
 /*
