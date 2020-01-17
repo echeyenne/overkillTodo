@@ -18,22 +18,11 @@ const todoReducer = createReducer(
         TodoAPIActions.loadAllSucceeded,
         (state, { todos }) => ({
             ...state,
-            todos: sortTodos(todos)
+            todos
         })
     )
 );
 
 export function reducer(state: State | undefined, action: Action) {
     return todoReducer(state, action);
-}
-
-function sortTodos(todos: TodoModel[]) {
-    return todos.
-        filter(todo => !todo.isClosed).
-        sort((a: TodoModel, b: TodoModel) => b.lastUpdateTimestamp - a.lastUpdateTimestamp).
-        concat(
-            todos.
-                filter(todo => todo.isClosed).
-                sort((a: TodoModel, b: TodoModel) => a.lastUpdateTimestamp - b.lastUpdateTimestamp)
-        );
 }
