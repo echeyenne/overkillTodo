@@ -9,7 +9,7 @@ export const selectTodoList = createSelector(
     state => sortTodos(state.todos)
 );
 
-function sortTodos(todos: TodoModel[]) {
+function sortTodos(todos: TodoModel[]): TodoModel[] {
     return todos.
         filter(todo => !todo.isClosed).
         sort((a: TodoModel, b: TodoModel) => b.lastUpdateTimestamp - a.lastUpdateTimestamp).
