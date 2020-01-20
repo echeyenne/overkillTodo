@@ -22,8 +22,7 @@ describe('TodoListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MaterialModule, FormsModule,
-        ReactiveFormsModule],
+      imports: [MaterialModule, FormsModule, ReactiveFormsModule],
       declarations: [TodoListComponent],
       providers: [provideMockStore({ initialState })],
     })
