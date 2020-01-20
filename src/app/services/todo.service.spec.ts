@@ -32,7 +32,9 @@ describe('TodoService', () => {
     let retrievedTodos: Array<TodoModel> = [];
     todoService.list().subscribe((todos: Array<TodoModel>) => (retrievedTodos = todos));
 
-    http.expectOne(`${environment.baseUrl}/api/todos`).flush(mockedTodos);
+    const request = http.expectOne(`${environment.baseUrl}/api/todos`);
+    expect(request.request.method).toEqual('GET');
+    request.flush(mockedTodos);
 
     expect(retrievedTodos.length)
       .withContext('The `list` method should return an array of TodoModel wrapped in an Observable')
@@ -46,7 +48,9 @@ describe('TodoService', () => {
     let actualTodos: Array<TodoModel> = [];
     todoService.list().subscribe((todos: Array<TodoModel>) => (actualTodos = todos));
 
-    http.expectOne(`${environment.baseUrl}/api/todos`).flush(mockedTodos);
+    const request = http.expectOne(`${environment.baseUrl}/api/todos`);
+    expect(request.request.method).toEqual('GET');
+    request.flush(mockedTodos);
 
     expect(actualTodos.length)
       .withContext('The `list` method should return an array of TodoModel wrapped in an Observable')
