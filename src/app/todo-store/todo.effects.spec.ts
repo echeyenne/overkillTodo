@@ -5,7 +5,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { Observable, of } from 'rxjs';
 import { TodoAPIActions, TodoUIActions } from '.';
 import { TodoService } from '../services/todo.service';
-import { TodoStoreEffects } from './todo.effects';
+import { TodoEffects } from './todo.effects';
 import { State } from './todo.reducer';
 
 describe('TodoEffects', () => {
@@ -15,13 +15,13 @@ describe('TodoEffects', () => {
     };
 
     let actions$: Observable<Action>;
-    let effects: TodoStoreEffects;
+    let effects: TodoEffects;
     let todoServiceSpy: jasmine.SpyObj<TodoService>;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
             providers: [
-                TodoStoreEffects,
+                TodoEffects,
                 provideMockStore({ initialState }),
                 provideMockActions(() => actions$),
                 {
@@ -31,7 +31,7 @@ describe('TodoEffects', () => {
             ]
         }).compileComponents();
 
-        effects = TestBed.get(TodoStoreEffects);
+        effects = TestBed.get(TodoEffects);
         todoServiceSpy = TestBed.get(TodoService);
     });
 

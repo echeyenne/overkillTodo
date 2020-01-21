@@ -7,7 +7,7 @@ import * as TodoAPIActions from './api.actions';
 import * as TodoUIActions from './ui.actions';
 
 @Injectable()
-export class TodoStoreEffects {
+export class TodoEffects {
 
   constructor(private todoService: TodoService, private actions: Actions) { }
 
