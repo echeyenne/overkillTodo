@@ -1,0 +1,17 @@
+<div id="container">
+    <mat-card>
+        <mat-card-title id="todoListTitle">
+            Todos
+        </mat-card-title>
+        <mat-card-content>
+            <mat-list id="todoListContent">
+                <mat-list-item *ngFor="let todo of todos$ | async">
+                    <h4 matLine>
+                        <mat-checkbox [(ngModel)]="todo.isClosed" disabled></mat-checkbox>
+                        {{todo.title}}
+                    </h4>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+</div>

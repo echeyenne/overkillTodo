@@ -6,6 +6,14 @@ export class AppPage {
   }
 
   getTitleText() {
-    return element(by.css('app-root .content span')).getText() as Promise<string>;
+    return element(by.id('app-title')).getText() as Promise<string>;
+  }
+
+  getTodoListElement() {
+    return element(by.tagName('app-todo-list')).getWebElement();
+  }
+
+  getTodoElements() {
+    return element.all(by.tagName('mat-list-item'));
   }
 }
