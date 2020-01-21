@@ -7,7 +7,7 @@
             <mat-list id="todoListContent">
                 <mat-list-item *ngFor="let todo of todos$ | async">
                     <h4 matLine>
-                        <mat-checkbox [(ngModel)]="todo.isClosed" disabled></mat-checkbox>
+                        <mat-checkbox [(ngModel)]="todo.isClosed" (change)="handleTodoClicked(todo)"></mat-checkbox>
                         {{todo.title}}
                     </h4>
                 </mat-list-item>
