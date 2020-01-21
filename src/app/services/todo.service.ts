@@ -15,9 +15,8 @@ export class TodoService {
     return this.http.get<TodoModel[]>(`${environment.baseUrl}/api/todos`);
   }
 
-  update(todo: TodoModel): Observable<null | TodoModel> {
-    // This should be managed on server side
+  update(todo: TodoModel): Observable<void> {
     todo.lastUpdateTimestamp = + new Date();
-    return this.http.put<TodoModel>(`api/todos/${todo.id}`, todo);
+    return this.http.put<void>(`${environment.baseUrl}/api/todos/${todo.id}`, todo);
   }
 }

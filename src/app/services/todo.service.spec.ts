@@ -17,6 +17,8 @@ describe('TodoService', () => {
     http = TestBed.get(HttpTestingController);
   });
 
+  afterAll(() => http.verify());
+
   it('should be created', () => {
     const service: TodoService = TestBed.get(TodoService);
     expect(service).toBeTruthy();
@@ -55,5 +57,21 @@ describe('TodoService', () => {
     expect(actualTodos.length)
       .withContext('The `list` method should return an array of TodoModel wrapped in an Observable')
       .toBe(0);
+  });
+
+  it('should update todo', () => {
+    const mockedTodo: TodoModel = { id: 1, title: 'Todo 1', isClosed: false, lastUpdateTimestamp: 1579179834 };
+
+    todoService.update({ ...mockedTodo }).subscribe();
+
+    const request = http.expectOne({ method: 'PUT', url: `${environment.baseUrl}/api/todos/${mockedTodo.id}` });
+    const retrievedTodo = request.request.body;
+
+    expect(retrievedTodo.lastUpdateTimestamp).toBeGreaterThan(mockedTodo.lastUpdateTimestamp);
+    expect(retrievedTodo.id).toEqual(mockedTodo.id);
+    expect(retrievedTodo.title).toEqual(mockedTodo.title);
+    expect(retrievedTodo.isClosed).toEqual(mockedTodo.isClosed);
+
+    request.flush(mockedTodo);
   });
 });
