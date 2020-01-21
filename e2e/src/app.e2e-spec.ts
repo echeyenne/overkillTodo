@@ -1,5 +1,5 @@
+import { browser, by, logging } from 'protractor';
 import { AppPage } from './app.po';
-import { browser, logging } from 'protractor';
 
 describe('workspace-project App', () => {
   let page: AppPage;
@@ -8,9 +8,17 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
+  it('should display title', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('overkill-todo app is running!');
+    expect(page.getTitleText()).toEqual('Overkill Todo App');
+  });
+
+  it('should display todo list', () => {
+    page.navigateTo();
+    expect(page.getTodoListElement().isDisplayed()).toBeTruthy();
+    expect(page.getTodoListElement().findElement(by.id('todoListTitle')).getText()).toEqual('Todos');
+    expect(page.getTodoElements().count()).toBe(5);
+    // Considering todo list component is tested, this test is light
   });
 
   afterEach(async () => {
