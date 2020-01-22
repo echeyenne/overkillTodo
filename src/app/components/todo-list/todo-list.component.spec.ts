@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -27,13 +27,17 @@ describe('TodoListComponent', () => {
       providers: [provideMockStore({ initialState })],
     })
       .compileComponents();
-  }));
-
-  beforeEach(() => {
     store = TestBed.get(Store);
     fixture = TestBed.createComponent(TodoListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  }));
+
+  beforeEach(() => {
+    /*store = TestBed.get(Store);
+    fixture = TestBed.createComponent(TodoListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();*/
   });
 
   it('should create', () => {
@@ -71,4 +75,27 @@ describe('TodoListComponent', () => {
     expect(element.querySelectorAll('#todoListContent mat-list-item').length).toBe(0);
   });
 
+
+  it('should toggle todos', fakeAsync(() => {
+    tick(1000);
+    fixture.detectChanges();
+    const element: HTMLElement = fixture.debugElement.nativeElement;
+
+    const openedTodoCheckbox: HTMLElement = element.querySelector('#mat-checkbox-1-input');
+    const closedTodoCheckbox: HTMLElement = element.querySelector('#mat-checkbox-3-input');
+
+    expect(openedTodoCheckbox).not.toBeNull();
+    expect(openedTodoCheckbox.getAttribute('aria-checked')).toEqual('false');
+    openedTodoCheckbox.click();
+    tick(1000);
+    fixture.detectChanges();
+    expect(openedTodoCheckbox.getAttribute('aria-checked')).toEqual('true');
+
+    expect(closedTodoCheckbox).not.toBeNull();
+    expect(closedTodoCheckbox.getAttribute('aria-checked')).toEqual('true');
+    closedTodoCheckbox.click();
+    tick(1000);
+    fixture.detectChanges();
+    expect(closedTodoCheckbox.getAttribute('aria-checked')).toEqual('false');
+  }));
 });
