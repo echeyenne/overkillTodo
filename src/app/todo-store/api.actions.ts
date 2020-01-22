@@ -10,3 +10,13 @@ export const loadAllFailed = createAction(
     '[Todos API] Load All Failed',
     props<{ error: string }>()
 );
+
+export const toggleTodoSucceeded = createAction(
+    '[Todos API] Toggle Todo Succeeded',
+    props<{ toggledTodo: TodoModel }>()
+);
+
+export const toggleTodoFailed = createAction(
+    '[Todos API] Toggle Todo Failed',
+    props<{ toggledTodo: TodoModel, error: string }>()
+);

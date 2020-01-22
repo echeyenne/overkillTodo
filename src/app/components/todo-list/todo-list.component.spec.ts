@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick, flush, ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -27,14 +27,10 @@ describe('TodoListComponent', () => {
       providers: [provideMockStore({ initialState })],
     })
       .compileComponents();
-  }));
-
-  beforeEach(() => {
     store = TestBed.get(Store);
     fixture = TestBed.createComponent(TodoListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -45,23 +41,24 @@ describe('TodoListComponent', () => {
     expect(element.querySelector('#todoListTitle').textContent).toContain('Todos');
   });
 
-  it('should display 3 todos in a defined order', async(() => {
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-      const element: HTMLElement = fixture.debugElement.nativeElement;
-      const todoElements: NodeListOf<HTMLElement> = element.querySelectorAll('#todoListContent mat-list-item');
+  it('should display 3 todos in a defined order', fakeAsync(() => {
+    fixture.detectChanges();
+    flush();
+    fixture.detectChanges();
 
-      expect(todoElements.length).toBe(3);
+    const element: HTMLElement = fixture.debugElement.nativeElement;
+    const todoElements: NodeListOf<HTMLElement> = element.querySelectorAll('#todoListContent mat-list-item');
 
-      expect(todoElements[0].querySelector('h4').textContent).toContain('todo 1');
-      expect(todoElements[0].querySelector('mat-checkbox').classList).not.toContain('mat-checkbox-checked');
+    expect(todoElements.length).toBe(3);
 
-      expect(todoElements[1].querySelector('h4').textContent).toContain('todo 3');
-      expect(todoElements[1].querySelector('mat-checkbox').classList).not.toContain('mat-checkbox-checked');
+    expect(todoElements[0].querySelector('h4').textContent).toContain('todo 1');
+    expect(todoElements[0].querySelector('mat-checkbox').classList).not.toContain('mat-checkbox-checked');
 
-      expect(todoElements[2].querySelector('h4').textContent).toContain('todo 2');
-      expect(todoElements[2].querySelector('mat-checkbox').classList).toContain('mat-checkbox-checked');
-    });
+    expect(todoElements[1].querySelector('h4').textContent).toContain('todo 3');
+    expect(todoElements[1].querySelector('mat-checkbox').classList).not.toContain('mat-checkbox-checked');
+
+    expect(todoElements[2].querySelector('h4').textContent).toContain('todo 2');
+    expect(todoElements[2].querySelector('mat-checkbox').classList).toContain('mat-checkbox-checked');
   }));
 
   it('should display 0 todo', () => {
@@ -71,4 +68,29 @@ describe('TodoListComponent', () => {
     expect(element.querySelectorAll('#todoListContent mat-list-item').length).toBe(0);
   });
 
+  it('should toggle todos', fakeAsync(() => {
+    fixture.detectChanges();
+    flush();
+
+    const element: HTMLElement = fixture.debugElement.nativeElement;
+    const todoElements: NodeListOf<HTMLElement> = element.querySelectorAll('#todoListContent mat-list-item');
+
+    expect(todoElements.length).toBe(3);
+    const openedTodoCheckbox: HTMLElement = todoElements[0].getElementsByTagName('input')[0];
+    const closedTodoCheckbox: HTMLElement = todoElements[2].getElementsByTagName('input')[0];
+
+    expect(openedTodoCheckbox).not.toBeNull();
+    expect(openedTodoCheckbox.getAttribute('aria-checked')).toEqual('false');
+    openedTodoCheckbox.click();
+    tick(1000);
+    fixture.detectChanges();
+    expect(openedTodoCheckbox.getAttribute('aria-checked')).toEqual('true');
+
+    expect(closedTodoCheckbox).not.toBeNull();
+    expect(closedTodoCheckbox.getAttribute('aria-checked')).toEqual('true');
+    closedTodoCheckbox.click();
+    tick(1000);
+    fixture.detectChanges();
+    expect(closedTodoCheckbox.getAttribute('aria-checked')).toEqual('false');
+  }));
 });

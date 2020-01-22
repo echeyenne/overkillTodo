@@ -23,6 +23,7 @@ exports.config = {
     defaultTimeoutInterval: 30000,
     print: function() {}
   },
+  seleniumAddress: 'http://localhost:4444/wd/hub/',
   onPrepare() {
     require('ts-node').register({
       project: require('path').join(__dirname, './tsconfig.json')

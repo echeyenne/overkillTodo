@@ -7,7 +7,7 @@ import * as TodoAPIActions from './api.actions';
 import * as TodoUIActions from './ui.actions';
 
 @Injectable()
-export class TodoStoreEffects {
+export class TodoEffects {
 
   constructor(private todoService: TodoService, private actions: Actions) { }
 
@@ -21,6 +21,24 @@ export class TodoStoreEffects {
           map(todos => TodoAPIActions.loadAllSucceeded({ todos })),
           catchError(error =>
             of(TodoAPIActions.loadAllFailed({ error: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  toggleTodo = createEffect(() =>
+    this.actions.pipe(
+      ofType(
+        TodoUIActions.toggleTodoRequested
+      ),
+      mergeMap(action =>
+        (
+          this.todoService.update(action.todo).pipe(
+            map(() => TodoAPIActions.toggleTodoSucceeded({ toggledTodo: action.todo })),
+            catchError(error =>
+              of(TodoAPIActions.toggleTodoFailed({ toggledTodo: action.todo, error: error.message }))
+            )
           )
         )
       )
