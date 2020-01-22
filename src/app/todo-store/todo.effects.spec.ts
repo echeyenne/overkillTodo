@@ -1,18 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
 import { Observable, of } from 'rxjs';
 import { TodoAPIActions, TodoUIActions } from '.';
 import { TodoService } from '../services/todo.service';
 import { TodoEffects } from './todo.effects';
-import { State } from './todo.reducer';
 
 describe('TodoEffects', () => {
-
-    const initialState: State = {
-        todos: []
-    };
 
     let actions$: Observable<Action>;
     let effects: TodoEffects;
@@ -22,11 +16,10 @@ describe('TodoEffects', () => {
         TestBed.configureTestingModule({
             providers: [
                 TodoEffects,
-                provideMockStore({ initialState }),
                 provideMockActions(() => actions$),
                 {
                     provide: TodoService,
-                    useValue: jasmine.createSpyObj('todoService', ['list'])
+                    useValue: jasmine.createSpyObj('todoService', ['list', 'update'])
                 }
             ]
         }).compileComponents();
@@ -55,4 +48,23 @@ describe('TodoEffects', () => {
             });
         });
     });
+
+    describe(TodoUIActions.toggleTodoRequested.type, () => {
+
+        it('should return a ' + TodoAPIActions.toggleTodoSucceeded.type + ' action, with the toggle todo, on success', () => {
+            const todoMock = { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 };
+
+            actions$ = of({ type: TodoUIActions.toggleTodoRequested.type, todo: todoMock });
+            todoServiceSpy.update.and.returnValue(of({}));
+
+            effects.toggleTodo.subscribe((action) => {
+                expect(action).toEqual({
+                    type: TodoAPIActions.toggleTodoSucceeded.type,
+                    toggledTodo: todoMock
+                });
+                expect(todoServiceSpy.update).toHaveBeenCalled();
+            });
+        });
+    });
+
 });

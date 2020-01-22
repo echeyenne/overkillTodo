@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { TodoService } from '../services/todo.service';
 import * as TodoAPIActions from './api.actions';
 import * as TodoUIActions from './ui.actions';
@@ -32,11 +32,13 @@ export class TodoEffects {
       ofType(
         TodoUIActions.toggleTodoRequested
       ),
-      exhaustMap(action =>
+      mergeMap(action =>
         (
           this.todoService.update(action.todo).pipe(
             map(() => TodoAPIActions.toggleTodoSucceeded({ toggledTodo: action.todo })),
-            catchError(error => of(TodoAPIActions.toggleTodoFailed({ toggledTodo: action.todo, error: error.message })))
+            catchError(error =>
+              of(TodoAPIActions.toggleTodoFailed({ toggledTodo: action.todo, error: error.message }))
+            )
           )
         )
       )
