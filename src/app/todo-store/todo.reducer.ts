@@ -29,10 +29,10 @@ const todoReducer = createReducer(
     ),
     on(
         TodoAPIActions.toggleTodoFailed,
-        (state, { toggledTodo: closedTodo }) => ({
+        (state, { toggledTodo }) => ({
             ...state,
             todos: state.todos.map(todo => {
-                if (todo.id === closedTodo.id) {
+                if (todo.id === toggledTodo.id) {
                     todo.isClosed = !todo.isClosed;
                     return todo;
                 } else {

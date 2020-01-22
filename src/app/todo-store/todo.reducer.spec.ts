@@ -36,8 +36,6 @@ describe('TodoReducer', () => {
                 { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
             ]
         };
-        const action = TodoAPIActions.toggleTodoSucceeded({ toggledTodo: todoToToggle });
-        const state = todoReducer.reducer(initialState, action);
 
         todoToToggle.isClosed = true;
 
@@ -49,7 +47,26 @@ describe('TodoReducer', () => {
             ]
         };
 
+        const action = TodoAPIActions.toggleTodoSucceeded({ toggledTodo: todoToToggle });
+        const state = todoReducer.reducer(initialState, action);
+
         expect(state).toEqual(expectedState);
+    });
+
+    it('should not update todos on ' + TodoAPIActions.toggleTodoFailed.type, () => {
+        const todoToToggle: TodoModel = { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 };
+        const initialState = {
+            todos: [
+                todoToToggle,
+                { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
+                { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
+            ]
+        };
+        todoToToggle.isClosed = true;
+        const action = TodoAPIActions.toggleTodoFailed({ toggledTodo: todoToToggle, error: 'An error content' });
+        const state = todoReducer.reducer(initialState, action);
+
+        expect(state).toEqual(initialState);
     });
 
 });
