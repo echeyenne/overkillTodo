@@ -15,12 +15,14 @@ import { InMemoryTodoService } from './services/in-memory-todo-service';
 import { TodoStoreModule } from './todo-store/todo-store.module';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
+import { TodoDetailsComponent } from './components/todo-details/todo-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    TodoListComponent
+    TodoListComponent,
+    TodoDetailsComponent
   ],
   imports: [
     BrowserModule,
