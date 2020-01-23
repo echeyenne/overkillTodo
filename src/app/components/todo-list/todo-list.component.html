@@ -10,6 +10,9 @@
                         <mat-checkbox [(ngModel)]="todo.isClosed" (change)="handleTodoClicked(todo)"></mat-checkbox>
                         {{todo.title}}
                     </h4>
+                    <a mat-icon-button [routerLink]="['/todos/', todo.id]">
+                        <mat-icon>info</mat-icon>
+                    </a>
                 </mat-list-item>
             </mat-list>
         </mat-card-content>

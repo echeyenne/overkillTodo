@@ -76,4 +76,21 @@ describe('Todo selectors', () => {
         ];
         expect(todoSelector.selectTodoList.projector(initialState)).toEqual(expectedTodoList);
     });
+
+    it('should select a todo', () => {
+        const initialState = {
+            todos: [
+                { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 },
+                { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832906 },
+                { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832906 },
+                { id: 4, title: 'todo 4', isClosed: false, lastUpdateTimestamp: 1576832903 },
+                { id: 5, title: 'todo 5', isClosed: true, lastUpdateTimestamp: 1576832903 },
+                { id: 6, title: 'todo 6', isClosed: true, lastUpdateTimestamp: 1576832902 },
+                { id: 7, title: 'todo 7', isClosed: false, lastUpdateTimestamp: 1576832903 }
+            ]
+
+        };
+        const expectedTodo = { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832906 };
+        expect(todoSelector.selectTodo.projector(initialState, { todoId: expectedTodo.id })).toEqual(expectedTodo);
+    });
 });

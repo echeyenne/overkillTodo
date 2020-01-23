@@ -5,6 +5,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MaterialModule } from 'src/app/material.module';
 import { TodoModel } from 'src/app/models/todo.model';
 import { TodoListComponent } from './todo-list.component';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
@@ -22,9 +23,9 @@ describe('TodoListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MaterialModule, FormsModule, ReactiveFormsModule],
+      imports: [MaterialModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
       declarations: [TodoListComponent],
-      providers: [provideMockStore({ initialState })],
+      providers: [provideMockStore({ initialState })]
     })
       .compileComponents();
     store = TestBed.get(Store);

@@ -69,4 +69,48 @@ describe('TodoReducer', () => {
         expect(state).toEqual(initialState);
     });
 
+    it('should update todo on ' + TodoAPIActions.loadTodoSucceeded.type + ' with filled initial state', () => {
+        const todoToUpdate: TodoModel = { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 };
+        const initialState = {
+            todos: [
+                todoToUpdate,
+                { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
+                { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
+            ]
+        };
+
+        todoToUpdate.isClosed = true;
+
+        const expectedState = {
+            todos: [
+                todoToUpdate,
+                { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
+                { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
+            ]
+        };
+
+        const action = TodoAPIActions.loadTodoSucceeded({ loadedTodo: todoToUpdate });
+        const state = todoReducer.reducer(initialState, action);
+
+        expect(state).toEqual(expectedState);
+    });
+
+    it('should update todo on ' + TodoAPIActions.loadTodoSucceeded.type + ' with empty initial state', () => {
+        const todoToUpdate: TodoModel = { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 };
+        const initialState = {
+            todos: []
+        };
+
+        todoToUpdate.isClosed = true;
+
+        const expectedState = {
+            todos: [todoToUpdate]
+        };
+
+        const action = TodoAPIActions.loadTodoSucceeded({ loadedTodo: todoToUpdate });
+        const state = todoReducer.reducer(initialState, action);
+
+        expect(state).toEqual(expectedState);
+    });
+
 });

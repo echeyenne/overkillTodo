@@ -1,0 +1,17 @@
+<div id="container" *ngIf="todo$ | async as todo">
+    <mat-card>
+        <mat-card-title>
+            {{todo.title}}
+            <mat-icon *ngIf="todo.isClosed">done_outline</mat-icon>
+            <a mat-icon-button [routerLink]="['/']" style="float: right;">
+                <mat-icon>list_alt</mat-icon>
+            </a>
+        </mat-card-title>
+        <mat-card-subtitle>
+            Details
+        </mat-card-subtitle>
+        <mat-card-content>
+            {{todo.description}}
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -3,4 +3,5 @@ export interface TodoModel {
     title: string;
     isClosed: boolean;
     lastUpdateTimestamp: number;
+    description?: string;
 }

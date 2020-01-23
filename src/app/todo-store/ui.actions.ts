@@ -9,3 +9,8 @@ export const toggleTodoRequested = createAction(
     '[Todos Component] Toggle Todo Requested',
     props<{ todo: TodoModel; }>()
 );
+
+export const loadTodoRequested = createAction(
+    '[Todos Component] Load Todo Requested',
+    props<{ todoId: number; }>()
+);

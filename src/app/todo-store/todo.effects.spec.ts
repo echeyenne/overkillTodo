@@ -19,7 +19,7 @@ describe('TodoEffects', () => {
                 provideMockActions(() => actions$),
                 {
                     provide: TodoService,
-                    useValue: jasmine.createSpyObj('todoService', ['list', 'update'])
+                    useValue: jasmine.createSpyObj('todoService', ['list', 'update', 'get'])
                 }
             ]
         }).compileComponents();
@@ -63,6 +63,24 @@ describe('TodoEffects', () => {
                     toggledTodo: todoMock
                 });
                 expect(todoServiceSpy.update).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe(TodoUIActions.loadTodoRequested.type, () => {
+
+        it('should return a ' + TodoAPIActions.loadTodoSucceeded.type + ' action, with the loaded todo, on success', () => {
+            const todoMock = { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 };
+
+            actions$ = of({ type: TodoUIActions.loadTodoRequested.type, todoId: todoMock.id });
+            todoServiceSpy.get.and.returnValue(of(todoMock));
+
+            effects.loadTodo.subscribe((action) => {
+                expect(action).toEqual({
+                    type: TodoAPIActions.loadTodoSucceeded.type,
+                    loadedTodo: todoMock
+                });
+                expect(todoServiceSpy.get).toHaveBeenCalledWith(todoMock.id);
             });
         });
     });
