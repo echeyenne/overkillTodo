@@ -34,7 +34,7 @@ export class AppPage {
   }
 
   getTodoTitle(index: number) {
-    return this.getTodoElement(index).getText();
+    return this.getTodoElement(index).element(by.tagName('h4')).getText();
   }
 
   isTodoDone(index: number) {
