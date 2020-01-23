@@ -84,4 +84,19 @@ describe('TodoService', () => {
 
     expect(actualTodo).toEqual(mockedTodo);
   });
+
+  it('should create a todo', () => {
+    const mockedTodo: TodoModel = { id: 1, title: 'Todo 1', isClosed: false, lastUpdateTimestamp: 1579179834 };
+    let createdTodo: TodoModel;
+
+    todoService.create(mockedTodo).subscribe((todo: TodoModel) => (createdTodo = todo));
+
+    const request = http.expectOne({ method: 'POST', url: `${environment.baseUrl}/api/todos` });
+    const requestTodoPayload = request.request.body;
+
+    request.flush(mockedTodo);
+
+    expect(requestTodoPayload).toEqual(mockedTodo);
+    expect(createdTodo).toEqual(mockedTodo);
+  });
 });
