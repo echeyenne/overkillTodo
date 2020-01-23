@@ -25,7 +25,7 @@ describe('TodoListComponent', () => {
     TestBed.configureTestingModule({
       imports: [MaterialModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
       declarations: [TodoListComponent],
-      providers: [provideMockStore({ initialState })],
+      providers: [provideMockStore({ initialState })]
     })
       .compileComponents();
     store = TestBed.get(Store);
