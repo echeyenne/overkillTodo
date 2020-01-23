@@ -1,8 +1,9 @@
 import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
 import { TodoModel } from 'src/app/models/todo.model';
 import { TodoListComponent } from './todo-list.component';
@@ -21,13 +22,22 @@ describe('TodoListComponent', () => {
     }
   };
 
+  const dialogMock = {
+    open: () => {
+      return {
+        afterClosed: () => of({})
+      };
+    }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MaterialModule, RouterTestingModule],
       declarations: [TodoListComponent],
       providers: [
         provideMockStore({ initialState }),
-        { provide: MatSnackBar, useValue: {} }]
+        { provide: MatSnackBar, useValue: {} },
+        { provide: MatDialog, useValue: dialogMock }]
     })
       .compileComponents();
     store = TestBed.get(Store);
@@ -96,4 +106,12 @@ describe('TodoListComponent', () => {
     fixture.detectChanges();
     expect(closedTodoCheckbox.getAttribute('aria-checked')).toEqual('false');
   }));
+
+  it('should open create dialog', () => {
+    const dialog = TestBed.get(MatDialog);
+    const spy = spyOn(dialog, 'open').and.callThrough();
+    component.openAddDialog();
+    expect(spy).toHaveBeenCalled();
+  });
+
 });
