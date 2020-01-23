@@ -65,13 +65,23 @@ describe('TodoService', () => {
     todoService.update({ ...mockedTodo }).subscribe();
 
     const request = http.expectOne({ method: 'PUT', url: `${environment.baseUrl}/api/todos/${mockedTodo.id}` });
-    const retrievedTodo = request.request.body;
+    const requestTodoPayload = request.request.body;
 
-    expect(retrievedTodo.lastUpdateTimestamp).toBeGreaterThan(mockedTodo.lastUpdateTimestamp);
-    expect(retrievedTodo.id).toEqual(mockedTodo.id);
-    expect(retrievedTodo.title).toEqual(mockedTodo.title);
-    expect(retrievedTodo.isClosed).toEqual(mockedTodo.isClosed);
+    expect(requestTodoPayload.lastUpdateTimestamp).toBeGreaterThan(mockedTodo.lastUpdateTimestamp);
+    expect(requestTodoPayload.id).toEqual(mockedTodo.id);
+    expect(requestTodoPayload.title).toEqual(mockedTodo.title);
+    expect(requestTodoPayload.isClosed).toEqual(mockedTodo.isClosed);
+  });
 
+  it('should get a todo', () => {
+    const mockedTodo: TodoModel = { id: 1, title: 'Todo 1', isClosed: false, lastUpdateTimestamp: 1579179834 };
+    let actualTodo: TodoModel;
+
+    todoService.get(mockedTodo.id).subscribe((todo: TodoModel) => (actualTodo = todo));
+
+    const request = http.expectOne({ method: 'GET', url: `${environment.baseUrl}/api/todos/${mockedTodo.id}` });
     request.flush(mockedTodo);
+
+    expect(actualTodo).toEqual(mockedTodo);
   });
 });
