@@ -46,6 +46,12 @@ const todoReducer = createReducer(
             ...state,
             todos: updateTodo(state.todos, loadedTodo)
         })
+    ),
+    on(TodoAPIActions.createTodoSucceeded,
+        (state, { createdTodo }) => ({
+            ...state,
+            todos: updateTodo(state.todos, createdTodo)
+        })
     )
 );
 

@@ -2,6 +2,10 @@
     <mat-card>
         <mat-card-title id="todoListTitle">
             Todos
+            <button mat-raised-button color="primary" style="float: right;" (click)="openAddDialog()">
+                <mat-icon>add</mat-icon>
+                Add
+            </button>
         </mat-card-title>
         <mat-card-content>
             <mat-list id="todoListContent">

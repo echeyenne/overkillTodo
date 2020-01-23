@@ -1,11 +1,10 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick, flush, ComponentFixtureAutoDetect } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { MaterialModule } from 'src/app/material.module';
 import { TodoModel } from 'src/app/models/todo.model';
 import { TodoListComponent } from './todo-list.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
@@ -23,7 +22,7 @@ describe('TodoListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [MaterialModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
+      imports: [MaterialModule, RouterTestingModule],
       declarations: [TodoListComponent],
       providers: [provideMockStore({ initialState })]
     })

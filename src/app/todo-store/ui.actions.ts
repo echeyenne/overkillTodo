@@ -14,3 +14,8 @@ export const loadTodoRequested = createAction(
     '[Todos Component] Load Todo Requested',
     props<{ todoId: number; }>()
 );
+
+export const createTodoRequested = createAction(
+    '[Todos Component] Create Todo Requested',
+    props<{ todo: TodoModel; }>()
+);

@@ -63,4 +63,21 @@ export class TodoEffects {
     )
   );
 
+  createTodo = createEffect(() =>
+    this.actions.pipe(
+      ofType(
+        TodoUIActions.createTodoRequested
+      ),
+      mergeMap(action =>
+        (
+          this.todoService.create(action.todo).pipe(
+            map((createdTodo) => TodoAPIActions.createTodoSucceeded({ createdTodo })),
+            catchError(error =>
+              of(TodoAPIActions.createTodoFailed({ error: error.message }))
+            )
+          )
+        )
+      )
+    ));
+
 }

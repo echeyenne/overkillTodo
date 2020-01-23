@@ -1,1 +1,26 @@
-<p>create-todo-dialog works!</p>
+<h1 mat-dialog-title>Create a todo</h1>
+
+<mat-dialog-content [formGroup]="todoForm">
+    <mat-form-field>
+        <input matInput placeholder="Todo title*" [formControl]="titleCtrl">
+        <mat-hint *ngIf="!titleCtrl.dirty">Give a title to your todo</mat-hint>
+        <mat-error *ngIf="titleCtrl.dirty && titleCtrl.hasError('required')">
+            Title is required
+        </mat-error>
+        <mat-error *ngIf="titleCtrl.dirty && titleCtrl.hasError('minlength')">
+            Title should be at least 3 characters
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Todo description" [formControl]="descriptionCtrl">
+        <mat-hint *ngIf="!descriptionCtrl.dirty">Give a description to your todo</mat-hint>
+        <mat-error *ngIf="descriptionCtrl.dirty && descriptionCtrl.hasError('minlength')">
+            Title should be at least 3 characters
+        </mat-error>
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button (click)="cancel()" class="button">Cancel</button>
+    <button mat-button color="primary" (click)="create()" cdkFocusInitial class="button">Create</button>
+</mat-dialog-actions>

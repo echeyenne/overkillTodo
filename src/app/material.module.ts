@@ -1,6 +1,16 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule, MatCheckboxModule, MatIconModule, MatListModule, MatToolbarModule } from '@angular/material';
+import {
+  MatCardModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatListModule,
+  MatToolbarModule,
+  MatButtonModule,
+  MatInputModule
+} from '@angular/material';
 
 @NgModule({
   exports: [
@@ -9,6 +19,10 @@ import { MatCardModule, MatCheckboxModule, MatIconModule, MatListModule, MatTool
     MatCardModule,
     MatListModule,
     MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
     FormsModule,
     ReactiveFormsModule
   ]

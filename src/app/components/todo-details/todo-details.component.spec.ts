@@ -1,10 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MaterialModule } from 'src/app/material.module';
-import { TodoDetailsComponent } from './todo-details.component';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { of } from 'rxjs';
+import { MaterialModule } from 'src/app/material.module';
+import { TodoDetailsComponent } from './todo-details.component';
 
 describe('TodoDetailsComponent', () => {
   let component: TodoDetailsComponent;
