@@ -9,6 +9,11 @@ export const selectTodoList = createSelector(
     state => sortTodos(state.todos)
 );
 
+export const selectTodo = createSelector(
+    todoFeatureSelector,
+    (state: State, props: any) => state.todos.find(todo => todo.id === +props.todoId)
+);
+
 function sortTodos(todos: TodoModel[]): TodoModel[] {
     return todos.
         filter(todo => !todo.isClosed).
