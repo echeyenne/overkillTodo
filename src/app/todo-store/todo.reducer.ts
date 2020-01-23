@@ -40,9 +40,32 @@ const todoReducer = createReducer(
                 }
             })
         })
+    ),
+    on(TodoAPIActions.loadTodoSucceeded,
+        (state, { loadedTodo }) => ({
+            ...state,
+            todos: updateTodo(state.todos, loadedTodo)
+        })
     )
 );
 
 export function reducer(state: State | undefined, action: Action) {
     return todoReducer(state, action);
+}
+
+/**
+ * Update a todo in the todoList or add it if it does not exists already.
+ *
+ * @param todoList  The initial todo list to update.
+ * @param todo   The todo to update.
+ */
+function updateTodo(todoList: TodoModel[], todo: TodoModel): TodoModel[] {
+    const todoToUpdate = todoList.find(i => i.id === todo.id);
+    const todoIndex = todoList.indexOf(todoToUpdate);
+    if (todoIndex >= 0) {
+        todoList[todoIndex] = todo;
+    } else {
+        todoList.push(todo);
+    }
+    return todoList;
 }

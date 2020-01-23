@@ -45,4 +45,22 @@ export class TodoEffects {
     )
   );
 
+  loadTodo = createEffect(() =>
+    this.actions.pipe(
+      ofType(
+        TodoUIActions.loadTodoRequested
+      ),
+      mergeMap(action =>
+        (
+          this.todoService.get(action.todoId).pipe(
+            map((todo) => TodoAPIActions.loadTodoSucceeded({ loadedTodo: todo })),
+            catchError(error =>
+              of(TodoAPIActions.loadTodoFailed({ error: error.message }))
+            )
+          )
+        )
+      )
+    )
+  );
+
 }

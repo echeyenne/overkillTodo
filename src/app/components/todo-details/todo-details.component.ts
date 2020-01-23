@@ -19,8 +19,8 @@ export class TodoDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private store: Store<State>) { }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('todoId');
-    this.store.dispatch(TodoUIActions.loadAllRequested());
+    const id = +this.route.snapshot.paramMap.get('todoId');
+    this.store.dispatch(TodoUIActions.loadTodoRequested({todoId: id}));
     this.todo$ = this.store.select(selectTodo, { todoId: id });
   }
 
