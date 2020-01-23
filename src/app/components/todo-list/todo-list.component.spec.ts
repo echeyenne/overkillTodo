@@ -1,4 +1,5 @@
 import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -24,7 +25,9 @@ describe('TodoListComponent', () => {
     TestBed.configureTestingModule({
       imports: [MaterialModule, RouterTestingModule],
       declarations: [TodoListComponent],
-      providers: [provideMockStore({ initialState })]
+      providers: [
+        provideMockStore({ initialState }),
+        { provide: MatSnackBar, useValue: {} }]
     })
       .compileComponents();
     store = TestBed.get(Store);

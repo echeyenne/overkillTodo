@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { TodoModel } from 'src/app/models/todo.model';
@@ -18,7 +18,7 @@ export class TodoListComponent implements OnInit {
   todos$: Observable<TodoModel[]>;
   dialogConfig = new MatDialogConfig();
 
-  constructor(private store: Store<State>, private dialog: MatDialog) {
+  constructor(private store: Store<State>, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.dialogConfig.disableClose = true;
     this.dialogConfig.autoFocus = true;
     this.dialogConfig.width = '400px';
@@ -34,7 +34,12 @@ export class TodoListComponent implements OnInit {
   }
 
   openAddDialog() {
-    this.dialog.open(CreateTodoDialogComponent, this.dialogConfig);
+    this.dialog.
+      open(CreateTodoDialogComponent, this.dialogConfig).
+      afterClosed().subscribe((createdTodo: TodoModel) => {
+        if (createdTodo) {
+          this.snackBar.open(createdTodo.title + ' successfully created');
+        }
+      });
   }
-
 }
