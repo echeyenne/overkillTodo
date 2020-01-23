@@ -21,6 +21,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <button mat-button (click)="cancel()" class="button">Cancel</button>
-    <button mat-button color="primary" (click)="create()" cdkFocusInitial class="button">Create</button>
+    <button mat-button (click)="cancel()" class="button" id="cancelButton">Cancel</button>
+    <button mat-button color="primary" (click)="create()" cdkFocusInitial class="button" [disabled]="todoForm.invalid" id="createButton">Create</button>
 </mat-dialog-actions>

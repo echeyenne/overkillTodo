@@ -25,6 +25,7 @@ export class TodoService {
   }
 
   create(todo: TodoModel): Observable<TodoModel> {
+    todo.lastUpdateTimestamp = + new Date();
     return this.http.post<TodoModel>(`${environment.baseUrl}/api/todos`, todo);
   }
 }

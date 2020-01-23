@@ -38,7 +38,7 @@ export class CreateTodoDialogComponent implements OnInit {
       title: this.todoForm.value.title,
       description: this.todoForm.value.description,
       isClosed: false,
-      lastUpdateTimestamp: + new Date()
+      lastUpdateTimestamp: null
     };
     this.store.dispatch(TodoUIActions.createTodoRequested({ todo: newTodo }));
     this.dialogRef.close(this.todoForm.value);
