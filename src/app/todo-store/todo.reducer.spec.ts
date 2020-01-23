@@ -101,13 +101,29 @@ describe('TodoReducer', () => {
             todos: []
         };
 
+        const action = TodoAPIActions.loadTodoSucceeded({ loadedTodo: todoToUpdate });
+        const state = todoReducer.reducer(initialState, action);
+
         todoToUpdate.isClosed = true;
 
         const expectedState = {
             todos: [todoToUpdate]
         };
 
-        const action = TodoAPIActions.loadTodoSucceeded({ loadedTodo: todoToUpdate });
+        expect(state).toEqual(expectedState);
+    });
+
+    it('should create todo on ' + TodoAPIActions.createTodoSucceeded.type, () => {
+        const todoToCreate: TodoModel = { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 };
+        const initialState = {
+            todos: []
+        };
+
+        const expectedState = {
+            todos: [todoToCreate]
+        };
+
+        const action = TodoAPIActions.createTodoSucceeded({ createdTodo: todoToCreate });
         const state = todoReducer.reducer(initialState, action);
 
         expect(state).toEqual(expectedState);
