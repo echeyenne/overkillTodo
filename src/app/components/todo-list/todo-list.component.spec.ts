@@ -30,13 +30,17 @@ describe('TodoListComponent', () => {
     }
   };
 
+  const snackBarMock = {
+    open: () => { }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MaterialModule, RouterTestingModule],
       declarations: [TodoListComponent],
       providers: [
         provideMockStore({ initialState }),
-        { provide: MatSnackBar, useValue: {} },
+        { provide: MatSnackBar, useValue: snackBarMock },
         { provide: MatDialog, useValue: dialogMock }]
     })
       .compileComponents();
