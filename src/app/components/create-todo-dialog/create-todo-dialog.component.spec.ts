@@ -98,13 +98,6 @@ describe('CreateTodoDialogComponent', () => {
     expect(spy).toHaveBeenCalledWith(TodoUIActions.createTodoRequested({ todo: fakeTodo }));
   });
 
-  it('dialog should be closed after create', () => {
-    const dialog = TestBed.get(MatDialogRef);
-    const spy = spyOn(dialog, 'close').and.callThrough();
-    component.create();
-    expect(spy).toHaveBeenCalled();
-  });
-
   it('dialog should be closed after cancel', () => {
     const dialog = TestBed.get(MatDialogRef);
     const spy = spyOn(dialog, 'close').and.callThrough();

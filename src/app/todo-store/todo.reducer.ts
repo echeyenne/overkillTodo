@@ -1,15 +1,18 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { TodoModel } from '../models/todo.model';
 import * as TodoAPIActions from './api.actions';
+import * as TodoUIActions from './ui.actions';
 
 export const todosFeatureKey = 'todosStore';
 
 export interface State {
     todos: Array<TodoModel>;
+    closeCreateDialog: boolean;
 }
 
 export const initialState: State = {
-    todos: []
+    todos: [],
+    closeCreateDialog: true
 };
 
 const todoReducer = createReducer(
@@ -50,9 +53,16 @@ const todoReducer = createReducer(
     on(TodoAPIActions.createTodoSucceeded,
         (state, { createdTodo }) => ({
             ...state,
-            todos: updateTodo(state.todos, createdTodo)
+            todos: updateTodo(state.todos, createdTodo),
+            closeCreateDialog: true
         })
-    )
+    ),
+    on(TodoUIActions.createTodoDialogOpened,
+        (state) => ({
+            ...state,
+            closeCreateDialog: false
+        })
+    ),
 );
 
 export function reducer(state: State | undefined, action: Action) {

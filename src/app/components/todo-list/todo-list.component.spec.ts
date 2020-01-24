@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
@@ -12,13 +12,15 @@ describe('TodoListComponent', () => {
   let component: TodoListComponent;
   let fixture: ComponentFixture<TodoListComponent>;
   let store: MockStore<{ todosStore: { todos: Array<TodoModel> } }>;
+  let dialog: MatDialog;
 
   const initialState = {
     todosStore: {
       todos: [
         { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832903 },
         { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832903 },
-        { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832903 }]
+        { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832903 }],
+      closeCreateDialog: true
     }
   };
 
@@ -34,7 +36,7 @@ describe('TodoListComponent', () => {
     open: () => { }
   };
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MaterialModule, RouterTestingModule],
       declarations: [TodoListComponent],
@@ -47,7 +49,8 @@ describe('TodoListComponent', () => {
     store = TestBed.get(Store);
     fixture = TestBed.createComponent(TodoListComponent);
     component = fixture.componentInstance;
-  }));
+    dialog = TestBed.get(MatDialog);
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -112,8 +115,8 @@ describe('TodoListComponent', () => {
   }));
 
   it('should open create dialog', () => {
-    const dialog = TestBed.get(MatDialog);
     const spy = spyOn(dialog, 'open').and.callThrough();
+    fixture.detectChanges();
     component.openAddDialog();
     expect(spy).toHaveBeenCalled();
   });

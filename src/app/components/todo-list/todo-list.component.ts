@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig, MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { TodoModel } from 'src/app/models/todo.model';
 import { TodoUIActions } from 'src/app/todo-store';
 import { State } from 'src/app/todo-store/todo.reducer';
-import { selectTodoList } from 'src/app/todo-store/todo.selector';
+import { selectCloseCreateDialog, selectTodoList } from 'src/app/todo-store/todo.selector';
 import { CreateTodoDialogComponent } from '../create-todo-dialog/create-todo-dialog.component';
 
 @Component({
@@ -16,7 +16,9 @@ import { CreateTodoDialogComponent } from '../create-todo-dialog/create-todo-dia
 export class TodoListComponent implements OnInit {
 
   todos$: Observable<TodoModel[]>;
+  closeDialog$: Observable<boolean>;
   dialogConfig = new MatDialogConfig();
+  openedDialog: MatDialogRef<CreateTodoDialogComponent>;
 
   constructor(private store: Store<State>, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.dialogConfig.disableClose = true;
@@ -27,6 +29,7 @@ export class TodoListComponent implements OnInit {
   ngOnInit() {
     this.todos$ = this.store.select(selectTodoList);
     this.store.dispatch(TodoUIActions.loadAllRequested());
+    this.closeDialog$ = this.store.select(selectCloseCreateDialog);
   }
 
   handleTodoClicked(clickedTodo: TodoModel) {
@@ -34,12 +37,14 @@ export class TodoListComponent implements OnInit {
   }
 
   openAddDialog() {
-    this.dialog.
-      open(CreateTodoDialogComponent, this.dialogConfig).
-      afterClosed().subscribe((createdTodo: TodoModel) => {
-        if (createdTodo) {
-          this.snackBar.open(createdTodo.title + ' successfully created');
-        }
-      });
+    this.openedDialog = this.dialog.open(CreateTodoDialogComponent, this.dialogConfig);
+    this.store.dispatch(TodoUIActions.createTodoDialogOpened());
+
+    this.closeDialog$.subscribe(shouldCloseDialog => {
+      if (shouldCloseDialog) {
+        this.openedDialog.close();
+        this.snackBar.open('ToDo successfully created');
+      }
+    });
   }
 }

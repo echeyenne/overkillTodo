@@ -19,3 +19,7 @@ export const createTodoRequested = createAction(
     '[Todos Component] Create Todo Requested',
     props<{ todo: TodoModel; }>()
 );
+
+export const createTodoDialogOpened = createAction(
+    '[Todos Component] Create Todo Dialog Opened'
+);
