@@ -1,37 +1,56 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick, flush, ComponentFixtureAutoDetect } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { of } from 'rxjs';
 import { MaterialModule } from 'src/app/material.module';
 import { TodoModel } from 'src/app/models/todo.model';
 import { TodoListComponent } from './todo-list.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
   let fixture: ComponentFixture<TodoListComponent>;
   let store: MockStore<{ todosStore: { todos: Array<TodoModel> } }>;
+  let dialog: MatDialog;
 
   const initialState = {
     todosStore: {
       todos: [
         { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832903 },
         { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832903 },
-        { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832903 }]
+        { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832903 }],
+      closeCreateDialog: true
     }
   };
 
-  beforeEach(async(() => {
+  const dialogMock = {
+    open: () => {
+      return {
+        afterClosed: () => of({})
+      };
+    }
+  };
+
+  const snackBarMock = {
+    open: () => { }
+  };
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [MaterialModule, FormsModule, ReactiveFormsModule, RouterTestingModule],
+      imports: [MaterialModule, RouterTestingModule],
       declarations: [TodoListComponent],
-      providers: [provideMockStore({ initialState })]
+      providers: [
+        provideMockStore({ initialState }),
+        { provide: MatSnackBar, useValue: snackBarMock },
+        { provide: MatDialog, useValue: dialogMock }]
     })
       .compileComponents();
     store = TestBed.get(Store);
     fixture = TestBed.createComponent(TodoListComponent);
     component = fixture.componentInstance;
-  }));
+    dialog = TestBed.get(MatDialog);
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -94,4 +113,12 @@ describe('TodoListComponent', () => {
     fixture.detectChanges();
     expect(closedTodoCheckbox.getAttribute('aria-checked')).toEqual('false');
   }));
+
+  it('should open create dialog', () => {
+    const spy = spyOn(dialog, 'open').and.callThrough();
+    fixture.detectChanges();
+    component.openAddDialog();
+    expect(spy).toHaveBeenCalled();
+  });
+
 });

@@ -1,4 +1,4 @@
-import { TodoAPIActions } from '.';
+import { TodoAPIActions, TodoUIActions } from '.';
 import { TodoModel } from '../models/todo.model';
 import * as todoReducer from './todo.reducer';
 
@@ -19,7 +19,8 @@ describe('TodoReducer', () => {
                 { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 },
                 { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
                 { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
-            ]
+            ],
+            closeCreateDialog: true
         };
         const action = TodoAPIActions.loadAllSucceeded(expectedState);
         const state = todoReducer.reducer(initialState, action);
@@ -34,7 +35,8 @@ describe('TodoReducer', () => {
                 todoToToggle,
                 { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
                 { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
-            ]
+            ],
+            closeCreateDialog: true
         };
 
         todoToToggle.isClosed = true;
@@ -44,7 +46,8 @@ describe('TodoReducer', () => {
                 todoToToggle,
                 { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
                 { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
-            ]
+            ],
+            closeCreateDialog: true
         };
 
         const action = TodoAPIActions.toggleTodoSucceeded({ toggledTodo: todoToToggle });
@@ -60,7 +63,8 @@ describe('TodoReducer', () => {
                 todoToToggle,
                 { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
                 { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
-            ]
+            ],
+            closeCreateDialog: true
         };
         todoToToggle.isClosed = true;
         const action = TodoAPIActions.toggleTodoFailed({ toggledTodo: todoToToggle, error: 'An error content' });
@@ -76,7 +80,8 @@ describe('TodoReducer', () => {
                 todoToUpdate,
                 { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
                 { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
-            ]
+            ],
+            closeCreateDialog: true
         };
 
         todoToUpdate.isClosed = true;
@@ -86,7 +91,8 @@ describe('TodoReducer', () => {
                 todoToUpdate,
                 { id: 2, title: 'todo 2', isClosed: true, lastUpdateTimestamp: 1576832902 },
                 { id: 3, title: 'todo 3', isClosed: false, lastUpdateTimestamp: 1576832902 }
-            ]
+            ],
+            closeCreateDialog: true
         };
 
         const action = TodoAPIActions.loadTodoSucceeded({ loadedTodo: todoToUpdate });
@@ -97,17 +103,51 @@ describe('TodoReducer', () => {
 
     it('should update todo on ' + TodoAPIActions.loadTodoSucceeded.type + ' with empty initial state', () => {
         const todoToUpdate: TodoModel = { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 };
-        const initialState = {
-            todos: []
-        };
+        const initialState = todoReducer.initialState;
+
+        const action = TodoAPIActions.loadTodoSucceeded({ loadedTodo: todoToUpdate });
+        const state = todoReducer.reducer(initialState, action);
 
         todoToUpdate.isClosed = true;
 
         const expectedState = {
-            todos: [todoToUpdate]
+            todos: [todoToUpdate],
+            closeCreateDialog: true
         };
 
-        const action = TodoAPIActions.loadTodoSucceeded({ loadedTodo: todoToUpdate });
+        expect(state).toEqual(expectedState);
+    });
+
+    it('should create todo on ' + TodoAPIActions.createTodoSucceeded.type, () => {
+        const todoToCreate: TodoModel = { id: 1, title: 'todo 1', isClosed: false, lastUpdateTimestamp: 1576832902 };
+        const initialState = {
+            todos: [],
+            closeCreateDialog: false
+        };
+
+        const expectedState = {
+            todos: [todoToCreate],
+            closeCreateDialog: true
+        };
+
+        const action = TodoAPIActions.createTodoSucceeded({ createdTodo: todoToCreate });
+        const state = todoReducer.reducer(initialState, action);
+
+        expect(state).toEqual(expectedState);
+    });
+
+    it('should update closeCreateDialog to false on ' + TodoUIActions.createTodoDialogOpened.type, () => {
+        const initialState = {
+            todos: [],
+            closeCreateDialog: true
+        };
+
+        const expectedState = {
+            todos: [],
+            closeCreateDialog: false
+        };
+
+        const action = TodoUIActions.createTodoDialogOpened();
         const state = todoReducer.reducer(initialState, action);
 
         expect(state).toEqual(expectedState);

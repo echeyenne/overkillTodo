@@ -24,7 +24,7 @@ describe('workspace-project App', () => {
   it('should display todo list', () => {
     page.navigateTo();
     expect(page.getTodoListElement().isDisplayed()).toBeTruthy();
-    expect(page.getTodoListElement().findElement(by.id('todoListTitle')).getText()).toEqual('Todos');
+    expect(page.getTodoListElement().findElement(by.id('todoListTitle')).getText()).toContain('Todos');
     expect(page.getTodoElements().count()).toBe(5);
     // Considering todo list component is tested, this test is light
   });

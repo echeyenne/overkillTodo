@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { TodoService } from '../services/todo.service';
 import * as TodoAPIActions from './api.actions';
 import * as TodoUIActions from './ui.actions';
@@ -9,10 +9,10 @@ import * as TodoUIActions from './ui.actions';
 @Injectable()
 export class TodoEffects {
 
-  constructor(private todoService: TodoService, private actions: Actions) { }
+  constructor(private todoService: TodoService, private actions$: Actions) { }
 
-  loadAllTodos = createEffect(() =>
-    this.actions.pipe(
+  loadAllTodos$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(
         TodoUIActions.loadAllRequested
       ),
@@ -27,8 +27,8 @@ export class TodoEffects {
     )
   );
 
-  toggleTodo = createEffect(() =>
-    this.actions.pipe(
+  toggleTodo$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(
         TodoUIActions.toggleTodoRequested
       ),
@@ -45,8 +45,8 @@ export class TodoEffects {
     )
   );
 
-  loadTodo = createEffect(() =>
-    this.actions.pipe(
+  loadTodo$ = createEffect(() =>
+    this.actions$.pipe(
       ofType(
         TodoUIActions.loadTodoRequested
       ),
@@ -63,4 +63,29 @@ export class TodoEffects {
     )
   );
 
+  createTodo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        TodoUIActions.createTodoRequested
+      ),
+      mergeMap(action =>
+        (
+          this.todoService.create(action.todo).pipe(
+            map((createdTodo) => TodoAPIActions.createTodoSucceeded({ createdTodo })),
+            catchError(error =>
+              of(TodoAPIActions.createTodoFailed({ error: error.message }))
+            )
+          )
+        )
+      )
+    ));
+
+  showAlertOnFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(TodoAPIActions.createTodoFailed),
+        tap(({ error }) => window.alert(error))
+      ),
+    { dispatch: false }
+  );
 }

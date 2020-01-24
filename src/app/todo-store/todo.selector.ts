@@ -14,6 +14,11 @@ export const selectTodo = createSelector(
     (state: State, props: any) => state.todos.find(todo => todo.id === +props.todoId)
 );
 
+export const selectCloseCreateDialog = createSelector(
+    todoFeatureSelector,
+    state => state.closeCreateDialog
+);
+
 function sortTodos(todos: TodoModel[]): TodoModel[] {
     return todos.
         filter(todo => !todo.isClosed).
