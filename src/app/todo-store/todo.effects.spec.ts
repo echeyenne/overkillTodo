@@ -40,7 +40,7 @@ describe('TodoEffects', () => {
             actions$ = of(TodoUIActions.loadAllRequested);
             todoServiceSpy.list.and.returnValue(of(listTodosMock));
 
-            effects.loadAllTodos.subscribe(action => {
+            effects.loadAllTodos$.subscribe(action => {
                 expect(action).toEqual({
                     type: TodoAPIActions.loadAllSucceeded.type,
                     todos: listTodosMock
@@ -57,7 +57,7 @@ describe('TodoEffects', () => {
             actions$ = of({ type: TodoUIActions.toggleTodoRequested.type, todo: todoMock });
             todoServiceSpy.update.and.returnValue(of({}));
 
-            effects.toggleTodo.subscribe((action) => {
+            effects.toggleTodo$.subscribe((action) => {
                 expect(action).toEqual({
                     type: TodoAPIActions.toggleTodoSucceeded.type,
                     toggledTodo: todoMock
@@ -75,7 +75,7 @@ describe('TodoEffects', () => {
             actions$ = of({ type: TodoUIActions.loadTodoRequested.type, todoId: todoMock.id });
             todoServiceSpy.get.and.returnValue(of(todoMock));
 
-            effects.loadTodo.subscribe((action) => {
+            effects.loadTodo$.subscribe((action) => {
                 expect(action).toEqual({
                     type: TodoAPIActions.loadTodoSucceeded.type,
                     loadedTodo: todoMock
@@ -93,7 +93,7 @@ describe('TodoEffects', () => {
             actions$ = of({ type: TodoUIActions.createTodoRequested.type, todoId: todoMock.id });
             todoServiceSpy.create.and.returnValue(of(todoMock));
 
-            effects.createTodo.subscribe((action) => {
+            effects.createTodo$.subscribe((action) => {
                 expect(action).toEqual({
                     type: TodoAPIActions.createTodoSucceeded.type,
                     createdTodo: todoMock

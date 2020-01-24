@@ -11,7 +11,7 @@ export class TodoEffects {
 
   constructor(private todoService: TodoService, private actions: Actions) { }
 
-  loadAllTodos = createEffect(() =>
+  loadAllTodos$ = createEffect(() =>
     this.actions.pipe(
       ofType(
         TodoUIActions.loadAllRequested
@@ -27,7 +27,7 @@ export class TodoEffects {
     )
   );
 
-  toggleTodo = createEffect(() =>
+  toggleTodo$ = createEffect(() =>
     this.actions.pipe(
       ofType(
         TodoUIActions.toggleTodoRequested
@@ -45,7 +45,7 @@ export class TodoEffects {
     )
   );
 
-  loadTodo = createEffect(() =>
+  loadTodo$ = createEffect(() =>
     this.actions.pipe(
       ofType(
         TodoUIActions.loadTodoRequested
@@ -63,7 +63,7 @@ export class TodoEffects {
     )
   );
 
-  createTodo = createEffect(() =>
+  createTodo$ = createEffect(() =>
     this.actions.pipe(
       ofType(
         TodoUIActions.createTodoRequested
