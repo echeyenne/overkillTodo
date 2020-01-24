@@ -9,10 +9,10 @@ import * as TodoUIActions from './ui.actions';
 @Injectable()
 export class TodoEffects {
 
-  constructor(private todoService: TodoService, private actions: Actions) { }
+  constructor(private todoService: TodoService, private actions$: Actions) { }
 
   loadAllTodos$ = createEffect(() =>
-    this.actions.pipe(
+    this.actions$.pipe(
       ofType(
         TodoUIActions.loadAllRequested
       ),
@@ -28,7 +28,7 @@ export class TodoEffects {
   );
 
   toggleTodo$ = createEffect(() =>
-    this.actions.pipe(
+    this.actions$.pipe(
       ofType(
         TodoUIActions.toggleTodoRequested
       ),
@@ -46,7 +46,7 @@ export class TodoEffects {
   );
 
   loadTodo$ = createEffect(() =>
-    this.actions.pipe(
+    this.actions$.pipe(
       ofType(
         TodoUIActions.loadTodoRequested
       ),
@@ -64,7 +64,7 @@ export class TodoEffects {
   );
 
   createTodo$ = createEffect(() =>
-    this.actions.pipe(
+    this.actions$.pipe(
       ofType(
         TodoUIActions.createTodoRequested
       ),
